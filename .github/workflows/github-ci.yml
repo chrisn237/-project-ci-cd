@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -44,7 +44,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run Test 1
         run: |
@@ -52,7 +52,7 @@ jobs:
           echo "Test 1 réussi" > test1-results.txt
 
       - name: Upload test1 results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test1-results
           path: test1-results.txt
@@ -62,7 +62,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run Test 2
         run: |
@@ -70,7 +70,7 @@ jobs:
           echo "Test 2 réussi" > test2-results.txt
 
       - name: Upload test2 results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test2-results
           path: test2-results.txt
@@ -82,15 +82,15 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download test1 results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: test1-results
 
       - name: Download test2 results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: test2-results
 
