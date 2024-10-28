@@ -1,0 +1,12 @@
+{
+  "name": "-project-ci-cd",
+  "version": "1.0.0",
+  "description": "Ce projet met en place un pipeline (CI/CD) via GitHub, automatisant les étapes de **Build**, **Test**, et **Deploy**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
