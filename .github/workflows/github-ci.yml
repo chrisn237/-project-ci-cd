@@ -9,8 +9,8 @@ on:
     branches: [ main ]
 
 jobs:
-  # Étape Setup (Préparation des dépendances et build)
-  setup:
+  # Étape Build
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,25 +33,18 @@ jobs:
             exit 1
           fi
 
-      - name: Save node_modules as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: node_modules
-          path: node_modules  # Spécifiez explicitement le dossier node_modules à la racine
+      - name: Build Application
+        run: |
+          echo "Building the application..."
+          echo "Build réussi"
 
-  # Étape Test 1 (utilise les dépendances de l'étape setup)
+  # Étape Test (en parallèle)
   test1:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Restore node_modules artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: node_modules
-          path: node_modules  # Le répertoire cible pour restaurer node_modules
 
       - name: Run Test 1
         run: |
@@ -64,19 +57,12 @@ jobs:
           name: test1-results
           path: test1-results.txt
 
-  # Étape Test 2 (utilise les dépendances de l'étape setup)
   test2:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Restore node_modules artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: node_modules
-          path: node_modules  # Le répertoire cible pour restaurer node_modules
 
       - name: Run Test 2
         run: |
@@ -92,7 +78,7 @@ jobs:
   # Étape Deploy (conditionnelle : uniquement sur la branche main et lors d'un tag)
   deploy:
     runs-on: ubuntu-latest
-    needs: [setup, test1, test2]
+    needs: [build, test1, test2]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout code
