@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+# Déclenche le pipeline à chaque push sur la branche principale
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Étape Build
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Application
+        run: |
+          echo "Building the application with Docker..."
+          echo "Build réussi"
+
+  # Étape Test (en parallèle)
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Test 1
+        run: |
+          echo "Executing Test 1..."
+          echo "Test 1 réussi"
+
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Test 2
+        run: |
+          echo "Executing Test 2..."
+          echo "Test 2 réussi"
+
+  # Étape Deploy
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, test1, test2]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Application
+        env:
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
+        run: |
+          echo "Déploiement en cours..."
+          echo "Environnement de déploiement : $DEPLOY_ENV"
+          echo "Déploiement réussi"
