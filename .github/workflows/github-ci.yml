@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f package.json ]; then
-            npm ci
+            npm install
           else
             echo "package.json non trouvé."
             exit 1
