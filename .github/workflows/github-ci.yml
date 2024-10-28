@@ -27,20 +27,17 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f package.json ]; then
-            npm install
+            npm ci
           else
             echo "package.json non trouvé."
             exit 1
           fi
 
-      - name: Build Application
-        run: echo "Building the application..."
-
-      - name: Save node_modules
+      - name: Save node_modules as artifact
         uses: actions/upload-artifact@v3
         with:
           name: node_modules
-          path: ~/.npm  # Chemin vers le cache des dépendances
+          path: node_modules  # Spécifiez explicitement le dossier node_modules à la racine
 
   # Étape Test 1 (utilise les dépendances de l'étape setup)
   test1:
@@ -50,11 +47,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Restore node_modules
+      - name: Restore node_modules artifact
         uses: actions/download-artifact@v3
         with:
           name: node_modules
-          path: ~/.npm  # Emplacement où les dépendances seront restaurées
+          path: node_modules  # Le répertoire cible pour restaurer node_modules
 
       - name: Run Test 1
         run: |
@@ -75,11 +72,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Restore node_modules
+      - name: Restore node_modules artifact
         uses: actions/download-artifact@v3
         with:
           name: node_modules
-          path: ~/.npm  # Emplacement où les dépendances seront restaurées
+          path: node_modules  # Le répertoire cible pour restaurer node_modules
 
       - name: Run Test 2
         run: |
