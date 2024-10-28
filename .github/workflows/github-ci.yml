@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: node_modules
-          path: ~/.npm
+          path: ~/.npm  # Chemin vers le cache des dépendances
 
   # Étape Test 1 (utilise les dépendances de l'étape setup)
   test1:
@@ -54,7 +54,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node_modules
-          path: ~/.npm
+          path: ~/.npm  # Emplacement où les dépendances seront restaurées
 
       - name: Run Test 1
         run: |
@@ -79,7 +79,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node_modules
-          path: ~/.npm
+          path: ~/.npm  # Emplacement où les dépendances seront restaurées
 
       - name: Run Test 2
         run: |
